@@ -1,0 +1,74 @@
+// File: crud_operations.js
+// ========================
+// TASK 2: BASIC CRUD OPERATIONS
+// ========================
+
+// 1. INSERT OPERATIONS (Initial data setup)
+const insertBooks = () => {
+  try {
+    const result = db.books.insertMany([
+      {
+        title: "The Hobbit",
+        author: "J.R.R. Tolkien",
+        genre: "Fantasy",
+        published_year: 1937,
+        price: 12.99,
+        in_stock: true,
+        pages: 310,
+        publisher: "Allen & Unwin"
+      },
+      // Add your other 9 books here
+      {
+        title: "1984",
+        author: "George Orwell",
+        genre: "Dystopian",
+        published_year: 1949,
+        price: 9.99,
+        in_stock: true,
+        pages: 328,
+        publisher: "Secker & Warburg"
+      }
+    ]);
+    print(`Inserted ${result.insertedCount} books`);
+  } catch (e) {
+    print(`Error inserting books: ${e}`);
+  }
+};
+
+// 2. READ OPERATIONS
+const findBooksByGenre = (genre) => {
+  return db.books.find({ genre }).toArray();
+};
+
+const findBooksAfterYear = (year) => {
+  return db.books.find({ published_year: { $gt: year } }).toArray();
+};
+
+const findBooksByAuthor = (author) => {
+  return db.books.find({ author }).toArray();
+};
+
+// 3. UPDATE OPERATIONS
+const updateBookPrice = (title, newPrice) => {
+  return db.books.updateOne(
+    { title },
+    { $set: { price: newPrice } }
+  );
+};
+
+// 4. DELETE OPERATIONS
+const deleteBookByTitle = (title) => {
+  return db.books.deleteOne({ title });
+};
+
+// ========================
+// TESTING THE OPERATIONS
+// ========================
+
+// Uncomment to test (run in MongoDB shell)
+// insertBooks();
+// printjson(findBooksByGenre("Fantasy"));
+// printjson(findBooksAfterYear(2000));
+// printjson(findBooksByAuthor("George Orwell"));
+// printjson(updateBookPrice("1984", 10.99));
+// printjson(deleteBookByTitle("The Hobbit"));
